@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="module_kettlesolrplugin" default="compile.module.kettlesolrplugin">
+  <dirname property="module.kettlesolrplugin.basedir" file="${ant.file.module_kettlesolrplugin}"/>
+  
+  <property name="module.jdk.home.kettlesolrplugin" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.kettlesolrplugin" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.kettlesolrplugin" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.kettlesolrplugin" value="${compiler.args}"/>
+  
+  <property name="kettlesolrplugin.output.dir" value="${module.kettlesolrplugin.basedir}/classes/production/KettleSolrPlugin"/>
+  <property name="kettlesolrplugin.testoutput.dir" value="${module.kettlesolrplugin.basedir}/classes/test/KettleSolrPlugin"/>
+  
+  <path id="kettlesolrplugin.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="kettlesolrplugin.module.classpath">
+    <path refid="${module.jdk.classpath.kettlesolrplugin}"/>
+    <path refid="library.kettle.classpath"/>
+    <path refid="library.swt.classpath"/>
+    <path refid="library.commons-httpclient-3.0.1.classpath"/>
+    <path refid="library.solr_libs.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.kettlesolrplugin">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.kettlesolrplugin">
+    <patternset refid="excluded.from.module.kettlesolrplugin"/>
+  </patternset>
+  
+  <path id="kettlesolrplugin.module.sourcepath">
+    <dirset dir="${module.kettlesolrplugin.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.kettlesolrplugin" depends="compile.module.kettlesolrplugin.production,compile.module.kettlesolrplugin.tests" description="Compile module KettleSolrPlugin"/>
+  
+  <target name="compile.module.kettlesolrplugin.production" description="Compile module KettleSolrPlugin; production classes">
+    <mkdir dir="${kettlesolrplugin.output.dir}"/>
+    <javac2 destdir="${kettlesolrplugin.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.kettlesolrplugin}/javac">
+      <compilerarg line="${compiler.args.kettlesolrplugin}"/>
+      <bootclasspath refid="kettlesolrplugin.module.bootclasspath"/>
+      <classpath refid="kettlesolrplugin.module.classpath"/>
+      <src refid="kettlesolrplugin.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.kettlesolrplugin"/>
+    </javac2>
+    
+    <copy todir="${kettlesolrplugin.output.dir}">
+      <fileset dir="${module.kettlesolrplugin.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.kettlesolrplugin.tests" depends="compile.module.kettlesolrplugin.production" description="compile module KettleSolrPlugin; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.kettlesolrplugin" description="cleanup module">
+    <delete dir="${kettlesolrplugin.output.dir}"/>
+    <delete dir="${kettlesolrplugin.testoutput.dir}"/>
+  </target>
+</project>

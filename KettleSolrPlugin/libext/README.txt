@@ -1,0 +1,1 @@
+Copy a built kettle.jar from the kettle project to this directory to be able to build this plugin via ant.
